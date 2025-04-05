@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  S3Bucket:
+    Type: String
+    Description: S3 Bucket where the Lambda zip file is located
+  S3Key:
+    Type: String
+    Description: S3 Key (path) to the Lambda zip file
+
+Resources:
+  ExistingLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: myFunction # The name of the existing Lambda function
+      Role: arn:aws:iam::008971656356:role/service-role/myFunction-role-cusa9ame
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Code:
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
