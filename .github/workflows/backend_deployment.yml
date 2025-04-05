@@ -30,10 +30,11 @@ jobs:
 
       - name: Deploy CloudFormation update
         run: |
-          aws cloudformation deploy \
-            --template-file import-template.yml \
-            --stack-name ExistingLambdaStack \
-            --parameter-overrides \
-              S3Bucket=myfunctionzip \
-              S3Key=lambda.zip \
-            --capabilities CAPABILITY_NAMED_IAM
+          aws cloudformation update-stack \
+          --stack-name ExistingLambdaStack \
+          --template-body file://import-template.yml \
+          --parameter-overrides \
+            S3Bucket=myfunctionzip \
+            S3Key=lambda.zip \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --region ap-southeast-2

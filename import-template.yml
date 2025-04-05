@@ -10,6 +10,7 @@ Parameters:
 Resources:
   ExistingLambda:
     Type: AWS::Lambda::Function
+    DeletionPolicy: Retain
     Properties:
       FunctionName: myFunction # The name of the existing Lambda function
       Role: arn:aws:iam::008971656356:role/service-role/myFunction-role-cusa9ame
