@@ -33,6 +33,6 @@ jobs:
           aws cloudformation update-stack \
           --stack-name ExistingLambdaStack \
           --template-body file://import-template.yml \
-          --parameter-overrides S3Bucket=myfunctionzip S3Key=lambda.zip \
+          --parameters ParameterKey=S3Bucket,ParameterValue=myfunctionzip ParameterKey=S3Key,ParameterValue=lambda.zip \
           --capabilities CAPABILITY_NAMED_IAM \
           --region ap-southeast-2
