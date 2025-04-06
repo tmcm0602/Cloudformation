@@ -25,9 +25,13 @@ jobs:
         id: time
         run: echo "timestamp=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
 
-      - name: Zip Lambda code
+      - name: Zip Lambda code with timestamp
         run: |
           zip -r lambda-${{ steps.time.outputs.timestamp }}.zip index.js
+
+      - name: Delete old Lambda zip from S3 (if exists)
+        run: |
+          aws s3 rm s3://myfunctionzip/lambda-*.zip || echo "No old zip file to delete"
 
       - name: Upload to S3
         run: aws s3 cp lambda-${{ steps.time.outputs.timestamp }}.zip s3://myfunctionzip/
