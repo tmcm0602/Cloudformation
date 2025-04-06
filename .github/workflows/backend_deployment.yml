@@ -21,18 +21,22 @@ jobs:
       - name: Install zip (if not already installed)
         run: sudo apt-get install zip -y
 
+      - name: Generate timestamp
+        id: time
+        run: echo "timestamp=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
+
       - name: Zip Lambda code
         run: |
-          zip -r lambda.zip index.js
+          zip -r lambda-${{ steps.time.outputs.timestamp }}.zip index.js
 
       - name: Upload to S3
-        run: aws s3 cp lambda.zip s3://myfunctionzip/
+        run: aws s3 cp lambda-${{ steps.time.outputs.timestamp }}.zip s3://myfunctionzip/
 
       - name: Deploy CloudFormation update
         run: |
           aws cloudformation update-stack \
           --stack-name ExistingLambdaStack \
           --template-body file://import-template.yml \
-          --parameters ParameterKey=S3Bucket,ParameterValue=myfunctionzip ParameterKey=S3Key,ParameterValue=lambda.zip \
+          --parameters ParameterKey=S3Bucket,ParameterValue=myfunctionzip ParameterKey=S3Key,ParameterValue=lambda-${{ steps.time.outputs.timestamp }}.zip \
           --capabilities CAPABILITY_NAMED_IAM \
           --region ap-southeast-2
