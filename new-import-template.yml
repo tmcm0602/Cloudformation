@@ -1,0 +1,19 @@
+Parameters:
+  S3Bucket:
+    Type: String
+    Description: "S3 bucket where the Lambda code is stored"
+  S3Key:
+    Type: String
+    Description: "S3 key for the Lambda zip file"
+
+Resources:
+  MyImportedLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: myFunction
+      Role: arn:aws:iam::008971656356:role/service-role/myFunction-role-cusa9ame
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
